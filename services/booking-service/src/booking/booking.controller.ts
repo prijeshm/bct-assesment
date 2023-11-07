@@ -2,7 +2,7 @@
 
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { BookingService } from './booking.service';
-import { Booking } from './booking.model';
+import { Booking } from './booking.schema';
 
 @Controller('bookings')
 export class BookingController {
