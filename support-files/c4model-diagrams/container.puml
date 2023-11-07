@@ -1,0 +1,54 @@
+@startuml Containers_Diagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Containers Diagram for Online Ticket Booking Platform
+' left to right direction
+Container(webApp, "User Interface (Web & Mobile)", "Provides user interaction")
+Container(apiGateway, "API Gateway", "Handles routing and cross-cutting concerns")
+Container(userService, "User Service", "Manages user registration and authentication")
+Container(movieCatalog, "Movie Catalog Service", "Provides movie information for users")
+Container(theaterService, "Theater Service", "Allows theater partner interactions")
+Container(authService, "Authentication and Authorization Service", "Provides centralized security")
+Container(contentService, "Content Management Service", "Manages platform content")
+Container(geolocationService, "Geolocation Service", "Offers location-based services")
+Container(reviewRatingService, "Review and Rating Service", "Manages user feedback")
+Container(recommendationService, "Recommendation Service", "Generates personalized movie recommendations")
+Container(seatManagementService, "Inventory and Seat Management Service", "Manages seat layouts and availability")
+Container(bookingService, "Booking Service", "Facilitates ticket reservations")
+Container(paymentService, "Payment Service", "Processes online payments")
+Container(notificationService, "Notification Service", "Sends notifications to users and theaters")
+Container(reportingService, "Reporting and Data Export Service", "Generates reports for theater partners")
+Container(analyticsService, "Analytics and Monitoring Service", "Collects and analyzes platform usage")
+
+Rel(webApp, apiGateway, "Uses", "HTTPS")
+Rel(apiGateway, userService, "Uses", "HTTPS")
+Rel(apiGateway, movieCatalog, "Uses", "HTTPS")
+Rel(apiGateway, theaterService, "Uses", "HTTPS")
+Rel(apiGateway, authService, "Uses", "HTTPS")
+Rel(apiGateway, contentService, "Uses", "HTTPS")
+Rel(apiGateway, geolocationService, "Uses", "HTTPS")
+Rel(apiGateway, reviewRatingService, "Uses", "HTTPS")
+Rel(apiGateway, recommendationService, "Uses", "HTTPS")
+Rel(apiGateway, seatManagementService, "Uses", "HTTPS")
+Rel(apiGateway, bookingService, "Uses", "HTTPS")
+Rel(apiGateway, paymentService, "Uses", "HTTPS")
+Rel(apiGateway, notificationService, "Uses", "HTTPS")
+Rel(apiGateway, reportingService, "Uses", "HTTPS")
+Rel(apiGateway, analyticsService, "Uses", "HTTPS")
+
+
+Lay_D(userService, movieCatalog)
+Lay_D(movieCatalog, theaterService)
+Lay_D(theaterService, authService) 
+Lay_D(authService, contentService)
+Lay_D(contentService, geolocationService)
+Lay_D(geolocationService, reviewRatingService)
+
+
+Lay_D(recommendationService, seatManagementService)
+Lay_D(seatManagementService, bookingService)
+Lay_D(bookingService, paymentService)
+Lay_D(paymentService, notificationService)
+Lay_D(notificationService, reportingService)
+Lay_D(reportingService, analyticsService)
+@enduml

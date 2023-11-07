@@ -1,0 +1,29 @@
+@startuml Component_Diagram_MovieCatalogService
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Component Diagram for Movie Catalog Service
+
+Person_Ext(userEndCustomers, "End Customers")
+Person_Ext(userTheaterPartners, "Theater Partners")
+Person(userAdmin, "Administrator")
+
+System_Boundary(systemBoundary, "Online Ticket Booking Platform") {
+    Container_Boundary(movieCatalogBoundary, "Movie Catalog Service") {
+        Component(movieCatalogService, "Movie Catalog Service", "Manages movie data\n(Node.js)")
+        ComponentDb(movieDatabase, "Movie Database (MongoDB)", "Stores movie information\nNoSQL Database")
+    }
+
+    SystemQueue(eventQueue, "Event Queue (Kafka)", "Message queue for event-driven synchronization")
+    SystemDb(externalServices, "External Services", "Movie Data Providers, Database")
+}
+
+Rel(userEndCustomers, movieCatalogService, "Accesses", "HTTPS")
+Rel(userAdmin, movieCatalogService, "Manages", "HTTPS")
+Rel(userTheaterPartners, movieCatalogService, "Utilizes", "HTTPS")
+
+Rel(movieCatalogService, movieDatabase, "Stores Data", "MongoDB")
+Rel(movieCatalogService, externalServices, "Uses for Data", "HTTPS")
+
+Rel(movieCatalogService, eventQueue, "Publishes Events", "Kafka")
+Rel(eventQueue, movieCatalogService, "Subscribes to Events", "Kafka")
+@enduml

@@ -1,0 +1,23 @@
+@startuml Component_Diagram_UserInterface
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Component Diagram for User Interface (Web & Mobile)
+
+Person(userEndCustomers, "End Customers")
+Person(userTheaterPartners, "Theater Partners")
+
+System_Boundary(systemBoundary, "Online Ticket Booking Platform") {
+    Container_Boundary(userInterfaceBoundary, "User Interface (Web & Mobile)") {
+        Component(webApp, "Web Application", "Provides web interface for end customers")
+        Component(mobileApp, "Mobile Application", "Provides mobile interface for end customers")
+        Component(apiGateway, "API Gateway", "Handles routing and cross-cutting concerns")
+    }
+}
+
+Rel(userEndCustomers, webApp, "Accesses", "HTTP/HTTPS")
+Rel(userTheaterPartners, webApp, "Accesses", "HTTP/HTTPS")
+Rel(userEndCustomers, mobileApp, "Accesses", "HTTP/HTTPS")
+Rel(userTheaterPartners, mobileApp, "Accesses", "HTTP/HTTPS")
+Rel(webApp, apiGateway, "Routes Requests", "HTTP/HTTPS")
+Rel(mobileApp, apiGateway, "Routes Requests", "HTTP/HTTPS")
+@enduml

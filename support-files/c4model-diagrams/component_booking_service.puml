@@ -1,0 +1,31 @@
+@startuml Component_Diagram_BookingService
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Component Diagram for Booking Service
+
+Person(userEndCustomers, "End Customers")
+Person(userTheaterPartners, "Theater Partners")
+Person(userAdmin, "Administrator")
+
+System_Boundary(systemBoundary, "Online Ticket Booking Platform") {
+    Container_Boundary(bookingServiceBoundary, "Booking Service") {
+        Component(bookingService, "Booking Service", "Facilitates ticket reservations\n(Node.js)")
+        ComponentDb(bookingDatabase, "Booking Database (PostgreSQL)", "Stores booking and transaction data")
+        Component(paymentService, "Payment Service", "Processes online payments")
+        Component(notificationService, "Notification Service", "Sends notifications to users and theaters")
+    }
+
+    SystemQueue(eventQueue, "Event Queue (Kafka)", "Message queue for event-driven synchronization")
+}
+
+Rel(userEndCustomers, bookingService, "Reserves Tickets", "HTTPS")
+Rel(userTheaterPartners, bookingService, "Manages Bookings", "HTTPS")
+Rel(userAdmin, bookingService, "Monitors", "HTTPS")
+
+Rel(bookingService, bookingDatabase, "Stores Booking Data", "JDBC")
+Rel(bookingService, paymentService, "Handles Payments", "HTTP")
+Rel(bookingService, notificationService, "Sends Notifications", "HTTP")
+
+Rel(bookingService, eventQueue, "Publishes Events", "Kafka")
+Rel(eventQueue, bookingService, "Subscribes to Events", "Kafka")
+@enduml

@@ -1,0 +1,27 @@
+@startuml Component_Diagram_TheaterService
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Component Diagram for Theater Service
+
+Person(userTheaterPartner, "Theater Partner")
+
+System_Boundary(systemBoundary, "Online Ticket Booking Platform") {
+    Container_Boundary(theaterServiceBoundary, "Theater Service") {
+        Component(theaterService, "Theater Service", "Manages theater operations\n(Node.js)")
+        ComponentDb(theaterDatabase, "Theater Database", "Stores theater information")
+        Component(theaterWebApp, "Theater Management Web App", "Web interface for theater partners")
+
+    }
+
+    SystemQueue(eventQueue, "Event Queue (Kafka)", "Message queue for event-driven synchronization")
+    SystemDb(redisSystem, "Session Manager (Redis)", "Stores and manages user sessions")
+}
+Rel(userTheaterPartner, theaterWebApp, "Uses", "HTTPS")
+Rel(theaterWebApp, theaterService, "Manages Theaters", "HTTP")
+Rel(theaterService, theaterDatabase, "Stores Data", "JDBC")
+BiRel(theaterService, redisSystem, "Manages User Sessions and Preferences using TCP/Redis", "TCP/Redis")
+
+Rel(theaterService, eventQueue, "Publishes Events", "Kafka")
+Rel(eventQueue, theaterService, "Subscribes to Events", "Kafka")
+@enduml

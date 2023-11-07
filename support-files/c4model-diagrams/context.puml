@@ -1,0 +1,17 @@
+@startuml Context_Diagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Context Digram for Online Ticket Booking Platform
+
+Person(userAdmin, "Administrator")
+Person(userTheaterPartners, "Theater Partners")
+Person_Ext(userEndCustomers, "End Customers")
+
+System(systemTicketBooking, "Online Ticket Booking Platform")
+System_Ext(systemExternal, "External Services", "Email, SMS, Payment Gateway etc")
+
+Rel(userAdmin, systemTicketBooking, "Uses", "HTTPS")
+Rel(userTheaterPartners, systemTicketBooking, "Uses", "HTTPS")
+Rel(userEndCustomers, systemTicketBooking, "Uses", "HTTPS")
+Rel(systemTicketBooking, systemExternal, "Get External Services", "HTTPS")
+@enduml
